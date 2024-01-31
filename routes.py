@@ -1,16 +1,13 @@
-import asyncio
-
 from datetime import timedelta
-from fastapi import Depends, FastAPI, HTTPException, status, WebSocket
+from fastapi import Depends, FastAPI, HTTPException, status
 from logger import logger
-from socketio import AsyncServer
 
-from fastapi.responses import HTMLResponse
+# from fastapi.responses import HTMLResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
-from starlette.websockets import WebSocketDisconnect 
+# from starlette.websockets import WebSocketDisconnect 
 
-from starlette.middleware.trustedhost import TrustedHostMiddleware
+# from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from config.auth import authenticate_user, ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_current_active_user
 from models.models import delete_posts, fetch_posts, fetch_post, initiate, insert_user, insert_posts, update_posts, user_posts
@@ -48,7 +45,7 @@ logger.info("Starting Blog APIs...")
 #         websockets.remove(websocket)
 
 
-@app.lifespan("startup")
+@app.on_event("startup")
 async def initiate_tables():
     logger.info("Database Populated with dummy values") if initiate() else logger.info("Already Populated")
 
