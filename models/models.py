@@ -1,10 +1,11 @@
 from datetime import datetime
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, inspect, String
 
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, inspect
 from sqlalchemy.orm import relationship
-from config.db import Base, session, engine
+
 from config.auth import get_password_hash
-from schema.schema import UserSignUp, PostSchema
+from config.db import Base, engine, session
+from schema.schema import PostSchema, UserSignUp
 
 
 class Posts(Base):
@@ -120,7 +121,6 @@ def user_posts(current_user):
 def fetch_post(post_id):
     try:
         post = session.query(Posts).filter_by(id=post_id).first()
-        print("model, True")
         return post
 
     except Exception:
@@ -148,7 +148,8 @@ def delete_posts(post_id):
         post = session.query(Posts).filter_by(id=post_id).first()
         session.delete(post)
         session.commit()
+        
         return True
+    
     except Exception:
         return False
-
