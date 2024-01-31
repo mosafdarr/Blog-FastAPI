@@ -127,10 +127,10 @@ async def user_post(current_user: User = Depends(get_current_active_user)):
     exception = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post with user ID: {current_user.id} does not exists")
     logger.info(f"Displaying all posts of user {current_user.username}")
 
-    posts = user_posts(current_user)
+    all_post = user_posts(current_user)
 
-    if posts:
-        return posts
+    if all_post:
+        return all_post
     else:
         raise exception
 
