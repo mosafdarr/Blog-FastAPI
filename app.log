@@ -25,3 +25,47 @@ AttributeError: module 'bcrypt' has no attribute '__about__'
 2024-01-26 17:59:26,026 - INFO - Populating Database
 2024-01-29 10:42:08,536 - INFO - Starting Blog APIs...
 2024-01-29 10:42:08,566 - INFO - Populating Database
+2024-01-29 11:03:37,768 - INFO - Starting Blog APIs...
+2024-01-29 11:03:37,779 - INFO - Populating Database
+2024-01-29 13:45:49,381 - INFO - Starting Blog APIs...
+2024-01-29 13:45:49,705 - INFO - Already Populated
+2024-01-29 13:46:08,704 - INFO - Parsing the csrf token to user
+2024-01-29 13:46:08,724 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\PMLS\Desktop\NETSOL\venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-01-29 13:46:20,604 - INFO - Displaying all posts
+2024-01-29 14:10:31,226 - INFO - Starting Blog APIs...
+2024-01-29 14:10:31,322 - INFO - Already Populated
+2024-01-29 14:10:45,400 - INFO - Starting Blog APIs...
+2024-01-29 14:10:45,489 - INFO - Already Populated
+2024-01-29 14:30:39,434 - INFO - Starting Blog APIs...
+2024-01-29 14:30:39,553 - INFO - Already Populated
+2024-01-29 15:44:28,715 - INFO - Parsing the csrf token to user
+2024-01-29 15:44:28,735 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\PMLS\Desktop\NETSOL\venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-01-29 15:44:39,177 - INFO - Displaying all posts
+2024-01-29 15:44:48,604 - INFO - Displaying all posts
+2024-01-29 17:11:12,995 - INFO - Displaying all posts
+2024-01-29 17:11:19,101 - INFO - Displaying all posts
+2024-01-29 17:11:19,266 - INFO - Displaying all posts
+2024-01-29 17:11:19,423 - INFO - Displaying all posts
+2024-01-29 17:11:19,654 - INFO - Displaying all posts
+2024-01-29 17:11:32,232 - INFO - Reading credentials of user Safdar
+2024-01-31 09:47:06,175 - INFO - Starting Blog APIs...
+2024-01-31 09:47:22,325 - INFO - Starting Blog APIs...
+2024-01-31 09:47:22,507 - INFO - Already Populated
+2024-01-31 09:47:42,123 - INFO - Starting Blog APIs...
+2024-01-31 09:47:42,194 - INFO - Already Populated
+2024-01-31 09:55:52,549 - INFO - Starting Blog APIs...
+2024-01-31 09:55:52,627 - INFO - Already Populated
+2024-01-31 10:01:10,180 - INFO - Starting Blog APIs...
+2024-01-31 10:01:10,233 - INFO - Already Populated
+2024-01-31 10:11:39,203 - INFO - Starting Blog APIs...
+2024-01-31 10:11:39,219 - INFO - Populating Database
