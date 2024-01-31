@@ -1,9 +1,16 @@
-from datetime import timedelta
-from fastapi import Depends, FastAPI, HTTPException, status
-from logger import logger
+import asyncio
 
-from passlib.context import CryptContext
+from datetime import timedelta
+from fastapi import Depends, FastAPI, HTTPException, status, WebSocket
+from logger import logger
+from socketio import AsyncServer
+
+from fastapi.responses import HTMLResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from passlib.context import CryptContext
+from starlette.websockets import WebSocketDisconnect 
+
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from config.auth import authenticate_user, ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_current_active_user
 from models.models import delete_posts, fetch_posts, fetch_post, initiate, insert_user, insert_posts, update_posts, user_posts
@@ -16,8 +23,32 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 app = FastAPI()
 logger.info("Starting Blog APIs...")
 
+# sio = AsyncServer(async_mode='asgi')
+# app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
+# app.mount("/ws", app=sio.app)
 
-@app.on_event("startup")
+# websockets = set()
+
+
+# @app.websocket("/ws")
+# async def websocket_endpoint(websocket: WebSocket):
+#     await websocket.accept()
+#     websockets.add(websocket)
+#     try:
+#         while True:
+#             # Retrieve all posts from the database
+#             all_posts = fetch_posts()
+
+#             # Send the list of posts to all connected clients
+#             await asyncio.gather(*[ws.send_json({"Posts": all_posts}) for ws in websockets])
+
+#             # Sleep for a second before the next iteration
+#             await asyncio.sleep(1)
+#     except WebSocketDisconnect:
+#         websockets.remove(websocket)
+
+
+@app.lifespan("startup")
 async def initiate_tables():
     logger.info("Database Populated with dummy values") if initiate() else logger.info("Already Populated")
 
@@ -144,3 +175,12 @@ async def delete_post(p_id: int, current_user: User = Depends(get_current_active
         return {"status": "Post Deleted Successfully"}
     else:
         raise exception
+
+
+# @app.websocket("/posts")
+# async def posts(websocket: WebSocket, current_user: User = Depends(get_current_active_user)):
+#     await websocket.accept()
+#
+#     while True:
+#         data = fetch_posts()
+#         await websocket.send_json(data)
