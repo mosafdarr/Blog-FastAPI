@@ -30,4 +30,3 @@ class UserSignUp(BaseModel):
 class PostSchema(BaseModel):
     title: str
     content: str
-

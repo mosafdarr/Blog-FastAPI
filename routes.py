@@ -2,8 +2,8 @@ from datetime import timedelta
 from fastapi import Depends, FastAPI, HTTPException, status
 from logger import logger
 
-from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from passlib.context import CryptContext
 
 from config.auth import authenticate_user, ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_current_active_user
 from models.models import delete_posts, fetch_posts, fetch_post, initiate, insert_user, insert_posts, update_posts, user_posts
