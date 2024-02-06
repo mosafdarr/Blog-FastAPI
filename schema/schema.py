@@ -1,5 +1,4 @@
-from pydantic import BaseModel
-from pydantic import EmailStr
+from pydantic import BaseModel, EmailStr, validator
 
 
 class Token(BaseModel):
@@ -25,6 +24,23 @@ class UserSignUp(BaseModel):
     username: str
     email: EmailStr
     password: str
+
+    @validator("username")
+    @classmethod
+    def username_must_have_3_letters(cls, username: str):
+        if len(username) < 3:
+            raise ValueError("Username must contain at least three letters")
+        
+        return username.title()
+
+    @validator("password")
+    @classmethod
+    def password_must_have_3_letters(cls, password: str):
+        if len(password) < 3: 
+            raise ValueError("Password must be strong")
+        
+        return password.title()
+
 
 
 class PostSchema(BaseModel):

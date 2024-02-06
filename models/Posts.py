@@ -12,6 +12,7 @@ class Post(get_base()):
     title = Column(String, nullable=False)
     date_posted = Column(DateTime, nullable=False)
     content = Column(String, nullable=False)
+    picture = Column(String, nullable=True)
     user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
 
     user = relationship("User", backref=backref("post"))
