@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, inspect, String
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, inspect, or_, String
 
 from sqlalchemy.orm import relationship
 
@@ -32,6 +32,13 @@ class Users(Base):
     posts = relationship("Posts", back_populates="users")
 
 
+class Pictures(Base):
+    __tablename__ = "pictures"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    picture = Column(String, nullable=True)
+
+
 def initiate():
     flag = False
     test_user = Users(username="Safdar", email="mosafdarlalii@gmail.com",
@@ -40,6 +47,12 @@ def initiate():
     inspector = inspect(engine)
     tables = inspector.get_table_names()
     print(tables)
+
+    if "pictures" not in tables:
+        Pictures.__table__.create(bind=engine)
+        session.commit()
+
+        flag = True
 
     if "users" not in tables:
         Users.__table__.create(bind=engine)
@@ -81,7 +94,7 @@ def fetch_posts():
 
 def insert_user(user: UserSignUp):
     try:
-        temp_user = session.query(Users).filter_by(username=user.username, email=user.email).first()
+        temp_user = session.query(Users).filter_by(or_(Users.username == user.username, Users.email == user.email)).first()
 
         if temp_user:
             return False
@@ -111,11 +124,7 @@ def insert_posts(post: PostSchema, current_user):
 
 def user_posts(current_user):
     posts = session.query(Posts).filter_by(user_id=current_user.id).all()
-
-    if posts:
-        return posts
-
-    return False
+    return posts
 
 
 def fetch_post(post_id):
@@ -143,13 +152,26 @@ def update_posts(post_id, post, current_user):
         return False
 
 
-def delete_posts(post_id):
+def delete_posts(post_id, current_user_id):
     try:
-        post = session.query(Posts).filter_by(id=post_id).first()
+        post = session.query(Posts).filter_by(id=post_id, user_id=current_user_id).first()
         session.delete(post)
         session.commit()
         
         return True
     
+    except Exception:
+        return False
+
+
+def save_picture(file):
+    try: 
+        picture = Pictures(file)
+
+        session.add(picture)
+        session.commit()
+
+        return True
+
     except Exception:
         return False
