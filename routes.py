@@ -2,12 +2,15 @@ import secrets
 
 from datetime import timedelta
 from fastapi import Depends, FastAPI, HTTPException, status, UploadFile
+from fastapi import Depends, FastAPI, HTTPException, Request, status, UploadFile
 from logger import logger, error_logger
 from os import path
 from PIL import Image
 
 from fastapi.responses import HTMLResponse
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from passlib.context import CryptContext
 
 from config.auth import authenticate_user, ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, get_current_active_user
@@ -20,6 +23,10 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+
 logger.info("Starting Blog APIs...")
 
 
@@ -27,6 +34,11 @@ logger.info("Starting Blog APIs...")
 async def initiate_tables():
     if initiate():
         logger.info("Database Populated with dummy values") 
+        
+
+@app.get("/home", response_class=HTMLResponse)
+async def home(request: Request):
+    return templates.TemplateResponse(request=request, name="layout.html", context={"id": 1})
 
 
 @app.post("/token", response_model=Token)
@@ -215,15 +227,15 @@ async def search_post(p_id: int, current_user: User = Depends(get_current_active
     Raises:
         HTTPException: If the post with the given ID is not found.
     """
-
-    exception = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post does not exists")
+    
+    exception = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="post does not exists")
 
     post = fetch_post(p_id)
 
     if post:
         logger.info(f"Searching for a post with post ID {p_id}")
         return {"Post": post}
-    
+      
     error_logger.error(f"Couldn't search any post with post ID {p_id}")
     raise exception
 
@@ -245,7 +257,7 @@ async def update_post(p_id: int, post: PostSchema, current_user: User = Depends(
         HTTPException: If the post with the given ID is not found.
     """
 
-    exception = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"post does not exists")
+    exception = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="post does not exists")
 
     updated = update_posts(p_id, post, current_user)
 
@@ -273,7 +285,7 @@ async def delete_post(p_id: int, current_user: User = Depends(get_current_active
         HTTPException: If the post with the given ID is not found.
     """
 
-    exception = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Either post doesn't exist or you dont have the right access to delete this post")
+    exception = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Either post doesn't exist or you dont have the right access to delete this post")
 
     deleted = delete_posts(p_id, current_user.id)
 
