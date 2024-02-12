@@ -1,6 +1,7 @@
 import secrets
 
 from datetime import timedelta
+from fastapi import Depends, FastAPI, HTTPException, status, UploadFile
 from fastapi import Depends, FastAPI, HTTPException, Request, status, UploadFile
 from logger import logger, error_logger
 from os import path
@@ -226,7 +227,7 @@ async def search_post(p_id: int, current_user: User = Depends(get_current_active
     Raises:
         HTTPException: If the post with the given ID is not found.
     """
-
+    
     exception = HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="post does not exists")
 
     post = fetch_post(p_id)
@@ -234,7 +235,7 @@ async def search_post(p_id: int, current_user: User = Depends(get_current_active
     if post:
         logger.info(f"Searching for a post with post ID {p_id}")
         return {"Post": post}
-     
+      
     error_logger.error(f"Couldn't search any post with post ID {p_id}")
     raise exception
 
