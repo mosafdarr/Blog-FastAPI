@@ -1,7 +1,10 @@
 import pytest, requests
+
 from fastapi import status
-from fastapi.testclient import TestClient
 from routes import app
+
+from fastapi.testclient import TestClient
+
 
 ENDPOINT = "http://127.0.0.1:8000"
 
